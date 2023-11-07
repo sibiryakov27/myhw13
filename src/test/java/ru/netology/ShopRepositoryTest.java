@@ -30,8 +30,22 @@ class ShopRepositoryTest {
     }
 
     @Test
-    public void shouldThrowAnException() {
+    public void shouldThrowNotFoundException() {
         assertThrows(NotFoundException.class, () -> repository.removeById(5));
+    }
+
+    @Test
+    public void shouldAddNewProduct() {
+        Product product5 = new Product(5, "Творог", 90);
+        Product[] expected = { product1, product2, product3, product4, product5 };
+        assertDoesNotThrow(() -> repository.add(product5));
+        Product[] actual = repository.findAll();
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldThrowAlreadyExistsException() {
+        assertThrows(AlreadyExistsException.class, () -> repository.add(new Product(2, "Творог", 90)));
     }
 
 }
